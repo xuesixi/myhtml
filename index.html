@@ -1,16 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<title>Document</title>
 </head>
+
 <body>
-	
-	<ul>
-		<li>this is something!</li>
-		<li>this is something!</li>
-		<li>this is something!</li>
-		<li>this is something!</li>
+	<p>Enter something here <input type="text" id="textInput"> <input type="button" id="button" value="Confirm"> </p>
+
+	<ul id="list">
+
 	</ul>
+
+	<script>
+		let list = document.getElementById('list');
+		let button = document.getElementById('button');
+		let textInput = document.getElementById('textInput');
+
+		button.onclick = function() {
+			if (textInput.value != "") {
+				let newItem = document.createElement("li");
+				newItem.innerHTML = textInput.value;
+				list.appendChild(newItem);
+				textInput.value = "";
+			} else {
+				alert("Please enter something!");
+			}
+		};
+
+	</script>
 </body>
+
 </html>
