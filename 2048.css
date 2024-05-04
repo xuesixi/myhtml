@@ -3,6 +3,7 @@
 }
 
 table {
+	margin-bottom: 20px;
 	border-spacing: 20px;
 	background-color: rgb(180, 100, 100);
 	border: 2px solid black;
@@ -17,11 +18,10 @@ td {
 	font-size: 1.5em;
 }
 
-#buttons {
-	border-spacing: 0px;
-}
-
 .button {
+	vertical-align: top;
+	margin: 0px;
+	border: 2px solid black;
 	width: var(--button-size);
 	height: var(--button-size);
 }
@@ -46,8 +46,13 @@ td {
 	background-repeat: no-repeat;
 	background-position: center;
 }
+#resetButton {
+	background-image: url(image/reset.png);
+	background-repeat: no-repeat;
+	background-position: center;
+}
 
-#leftButton, #rightButton {
+#leftButton, #rightButton, #resetButton {
 	position: relative;
 	top: var(--button-size);
 }
@@ -56,6 +61,10 @@ td {
 	position: relative;
 	top: calc( 2 * var(--button-size));
 	right: calc( 2 * var(--button-size));
+}
+
+#stepCountBanner {
+	font-size: 1.5em;
 }
 
 

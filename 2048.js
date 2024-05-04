@@ -6,21 +6,27 @@ const left = 3;
 let arr = [];
 let board = [];
 let merge = [];
+let stepCount = 0;
+
 let table = document.getElementById('table');
+let stepCountBanner = document.getElementById('stepCountBanner');
+
 let rightButton = document.getElementById('rightButton');
 let leftButton = document.getElementById('leftButton');
 let upButton = document.getElementById('upButton');
 let downButton = document.getElementById('downButton');
+let resetButton = document.getElementById('resetButton');
 
 let newRow;
 let newCol;
 
-initArr();
+resetGame();
 
 rightButton.onclick = function () { tableShift(right); };
 leftButton.onclick = function () { tableShift(left); };
 upButton.onclick = function () { tableShift(up); };
 downButton.onclick = function () { tableShift(down); };
+resetButton.onclick = resetGame;
 
 window.addEventListener("keydown", myKeyListener);
 
@@ -37,7 +43,9 @@ function myKeyListener(event) {
 	}
 }
 
-function initArr() {
+function resetGame() {
+	stepCount = 0;
+	stepCountBanner.innerHTML = "Step Count: " + stepCount;
 	for (let i = 0; i < 4; i++) {
 		arr[i] = [];
 		board[i] = [];
@@ -112,14 +120,12 @@ function updateBoard() {
 			}
 		}
 	}
+	stepCountBanner.innerHTML = "Step Count: " + stepCount;
 
 	if (count == 0 && moreActionPossible() == false) {
-		alert("End!");
-		window.removeEventListener("keydown", myKeyListener);
-		rightButton.onclick = null;
-		leftButton.onclick = null;
-		upButton.onclick = null;
-		downButton.onclick = null;
+		setTimeout(function () {
+			alert("Game Over!");
+		}, 1000);
 	}
 }
 
@@ -141,7 +147,7 @@ function removeTemp() {
 
 function shift(row, col, direction) {
 	if (isEmpty(row, col)) {
-		return;
+		return false;
 	}
 	let rowOffset = 0;
 	let colOffSet = 0;
@@ -157,49 +163,56 @@ function shift(row, col, direction) {
 	let newRow = row + rowOffset;
 	let newCol = col + colOffSet;
 	if (newRow < 0 || newRow > 3 || newCol < 0 || newCol > 3) {
-		return;
+		return false;
 	}
 	if (isEmpty(newRow, newCol)) {
 		let currVal = arr[row][col];
 		setArr(newRow, newCol, currVal);
 		setArr(row, col, 1);
 		shift(newRow, newCol, direction);
+		return true;
 	} else if (arr[row][col] === arr[newRow][newCol]) {
 		let temp = new Temp(2 * arr[row][col]);
 		setArr(newRow, newCol, temp);
 		setArr(row, col, 1);
+		return true;
 	}
+	return false;
 }
 
 function tableShift(direction) {
+	let success = false;
 	if (direction === right) {
 		for (let row = 0; row < 4; row++) {
 			for (let col = 3; col >= 0; col--) {
-				shift(row, col, direction);
+				success = shift(row, col, direction) || success;
 			}
 		}
 	} else if (direction === left) {
 		for (let row = 0; row < 4; row++) {
 			for (let col = 0; col < 4; col++) {
-				shift(row, col, direction);
+				success = shift(row, col, direction) || success;
 			}
 		}
 	} else if (direction === up) {
 		for (let row = 0; row < 4; row++) {
 			for (let col = 0; col < 4; col++) {
-				shift(row, col, direction);
+				success = shift(row, col, direction) || success;
 			}
 		}
 	} else if (direction == down) {
 		for (let row = 3; row >= 0; row--) {
 			for (let col = 0; col < 4; col++) {
-				shift(row, col, direction);
+				success = shift(row, col, direction) || success;
 			}
 		}
 	}
-	removeTemp();
-	random2();
-	updateBoard();
+	if (success) {
+		stepCount++;
+		removeTemp();
+		random2();
+		updateBoard();
+	}
 }
 
 function moreActionPossible() {
