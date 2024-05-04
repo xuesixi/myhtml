@@ -1,6 +1,10 @@
+:root {
+	--button-size: 80px;	
+}
 
 table {
 	border-spacing: 20px;
+	background-color: rgb(180, 100, 100);
 	border: 2px solid black;
 }
 
@@ -9,12 +13,51 @@ td {
 	width: 40px;
 	height: 40px;
 	padding: 20px;
-	border: 2px orange solid;
+/*	border: 2px blue solid;*/
+	font-size: 1.5em;
+}
+
+#buttons {
+	border-spacing: 0px;
 }
 
 .button {
-	width: 50px;
-	height: 30px;
+	padding: 0px;
+	margin: 0px;
+	width: var(--button-size);
+	height: var(--button-size);
+}
+
+#leftButton {
+	background-image: url(image/left.png);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+#rightButton {
+	background-image: url(image/right.png);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+#upButton {
+	background-image: url(image/up.png);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+#downButton {
+	background-image: url(image/down.png);
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#leftButton, #rightButton {
+	position: relative;
+	top: var(--button-size);
+}
+
+#downButton {
+	position: relative;
+	top: calc( 2 * var(--button-size));
+	right: calc( 2 * var(--button-size));
 }
 
 

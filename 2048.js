@@ -11,12 +11,27 @@ let leftButton = document.getElementById('leftButton');
 let upButton = document.getElementById('upButton');
 let downButton = document.getElementById('downButton');
 
+let newRow;
+let newCol;
+
 initArr();
 
 rightButton.onclick = function () { tableShift(right); };
 leftButton.onclick = function () { tableShift(left); };
 upButton.onclick = function () { tableShift(up); };
 downButton.onclick = function () { tableShift(down); };
+
+window.addEventListener("keydown", function(event){
+	if (event.key === "ArrowUp"){
+		tableShift(up);
+	}else if (event.key === "ArrowDown" ) {
+		tableShift(down);
+	}else if (event.key === "ArrowLeft" ) {
+		tableShift(left);
+	}else if (event.key === "ArrowRight" ) {
+		tableShift(right);
+	}
+});
 
 function initArr() {
 	for (let i = 0; i < 4; i++) {
@@ -60,7 +75,10 @@ function random2() {
 		let row = Math.floor(Math.random() * 4);
 		let col = Math.floor(Math.random() * 4);
 		if (arr[row][col] === 1) {
+			newRow = row;
+			newCol = col;
 			setArr(row, col, 2);
+			print("new block at: " + newRow + ", " + newCol);
 			return;
 		}
 	}
@@ -70,19 +88,26 @@ function random2() {
  * sync board with arr
  */
 function updateBoard() {
+	let count = 0;
 	for (let i = 0; i < 4; i++) {
 		for (let j = 0; j < 4; j++) {
 			if (isEmpty(i, j)) {
 				board[i][j].innerHTML = "";
+				board[i][j].style.backgroundColor = "white";
+				count++;
+			} else if (i === newRow && j === newCol) {
+				board[i][j].innerHTML = arr[i][j];
+				board[i][j].style.backgroundColor = "lightblue";
 			} else {
 				board[i][j].innerHTML = arr[i][j];
+				board[i][j].style.backgroundColor = "yellow";
 			}
 		}
 	}
 }
 
 /**
- * replace all temp with their values
+ * replace all temps with their values
  */
 function removeTemp() {
 	for (let i = 0; i < 4; i++) {
