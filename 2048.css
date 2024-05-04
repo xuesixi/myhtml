@@ -1,0 +1,20 @@
+
+table {
+	border-spacing: 20px;
+	border: 2px solid black;
+}
+
+td {
+	text-align: center;
+	width: 40px;
+	height: 40px;
+	padding: 20px;
+	border: 2px orange solid;
+}
+
+.button {
+	width: 50px;
+	height: 30px;
+}
+
+
