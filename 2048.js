@@ -5,6 +5,7 @@ const left = 3;
 
 let arr = [];
 let board = [];
+let merge = [];
 let table = document.getElementById('table');
 let rightButton = document.getElementById('rightButton');
 let leftButton = document.getElementById('leftButton');
@@ -21,22 +22,26 @@ leftButton.onclick = function () { tableShift(left); };
 upButton.onclick = function () { tableShift(up); };
 downButton.onclick = function () { tableShift(down); };
 
-window.addEventListener("keydown", function(event){
-	if (event.key === "ArrowUp"){
+window.addEventListener("keydown", myKeyListener);
+
+function myKeyListener(event) {
+	
+	if (event.key === "ArrowUp") {
 		tableShift(up);
-	}else if (event.key === "ArrowDown" ) {
+	} else if (event.key === "ArrowDown") {
 		tableShift(down);
-	}else if (event.key === "ArrowLeft" ) {
+	} else if (event.key === "ArrowLeft") {
 		tableShift(left);
-	}else if (event.key === "ArrowRight" ) {
+	} else if (event.key === "ArrowRight") {
 		tableShift(right);
 	}
-});
+}
 
 function initArr() {
 	for (let i = 0; i < 4; i++) {
 		arr[i] = [];
 		board[i] = [];
+		merge[i] = new Array(4);
 		let row = table.children[0].children[i];
 		for (let j = 0; j < 4; j++) {
 			arr[i][j] = 1; 
@@ -98,11 +103,23 @@ function updateBoard() {
 			} else if (i === newRow && j === newCol) {
 				board[i][j].innerHTML = arr[i][j];
 				board[i][j].style.backgroundColor = "lightblue";
+			} else if (merge[i][j] === true) {
+				board[i][j].innerHTML = arr[i][j];
+				board[i][j].style.backgroundColor = "red";
 			} else {
 				board[i][j].innerHTML = arr[i][j];
 				board[i][j].style.backgroundColor = "yellow";
 			}
 		}
+	}
+
+	if (count == 0 && moreActionPossible() == false) {
+		alert("End!");
+		window.removeEventListener("keydown", myKeyListener);
+		rightButton.onclick = null;
+		leftButton.onclick = null;
+		upButton.onclick = null;
+		downButton.onclick = null;
 	}
 }
 
@@ -114,6 +131,9 @@ function removeTemp() {
 		for (let j = 0; j < 4; j++) {
 			if (isTemp(i, j)) {
 				setArr(i, j, arr[i][j].value);
+				merge[i][j] = true;
+			} else {
+				merge[i][j] = false;
 			}
 		}
 	}
@@ -180,6 +200,30 @@ function tableShift(direction) {
 	removeTemp();
 	random2();
 	updateBoard();
+}
+
+function moreActionPossible() {
+	for (let row = 0; row < 4; row++) {
+		for (let col = 0; col < 4; col++) {
+			if (canMergeToRightOrDown(row, col)) {
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+/**
+ * return if the block can merge to right or down
+ */
+function canMergeToRightOrDown(row, col) {
+	if (row + 1 < 4 && arr[row][col] === arr[row + 1][col]) {
+		return true;
+	}
+	if (col + 1 < 4 && arr[row][col] == arr[row][col + 1]) {
+		return true;
+	}
+	return false;
 }
 
 function Temp(value) {

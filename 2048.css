@@ -13,7 +13,7 @@ td {
 	width: 40px;
 	height: 40px;
 	padding: 20px;
-/*	border: 2px blue solid;*/
+	border-style: ridge;
 	font-size: 1.5em;
 }
 
@@ -22,8 +22,6 @@ td {
 }
 
 .button {
-	padding: 0px;
-	margin: 0px;
 	width: var(--button-size);
 	height: var(--button-size);
 }
